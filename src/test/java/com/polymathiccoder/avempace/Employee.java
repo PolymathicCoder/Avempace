@@ -11,7 +11,7 @@ import com.polymathiccoder.avempace.meta.annotation.constraint.LSI;
 import com.polymathiccoder.avempace.meta.annotation.constraint.PrimaryHashKey;
 import com.polymathiccoder.avempace.meta.annotation.constraint.PrimaryRangeKey;
 
-@Entity(primaryRegion = Region.SA_EAST_1, secondaryRegions = {Region.AP_NORTHEAST_1, Region.US_WEST_2})
+@Entity(primaryRegion = Region.SA_EAST_1)
 @Table(name = "tbl_employee", readCapacityUnits = 10)
 public class Employee {
 	@PrimaryRangeKey(persistAsType = PersistAsType.NUMBER)
