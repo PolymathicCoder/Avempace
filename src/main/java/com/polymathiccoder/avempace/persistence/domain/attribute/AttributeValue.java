@@ -28,7 +28,6 @@ public class AttributeValue {
 		return new AttributeValue(persistentValue);
 	}
 
-	//Rename
 	public static AttributeValue fromEntityPropertyValue(AttributeSchema attributeSchema, final Object entityPropertyValue) {
 		final PersistentValue persistentValue = staticMethod("fromEntityPropertyValue")
 				.withReturnType(PersistentValue.class)

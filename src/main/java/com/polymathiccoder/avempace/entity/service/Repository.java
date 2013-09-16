@@ -16,4 +16,5 @@ public interface Repository<T> {
 	void update(final EntityPropertyValueCriteria entityPropertyValueCriteria, final EntityPropertyValueOperations entityPropertyValueOperations);
 
 	void remove(final T pojo);
+	void removeAll();
 }

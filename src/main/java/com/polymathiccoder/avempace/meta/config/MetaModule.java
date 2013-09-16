@@ -3,7 +3,7 @@ package com.polymathiccoder.avempace.meta.config;
 import javax.inject.Singleton;
 
 import com.polymathiccoder.avempace.entity.domain.Entity;
-import com.polymathiccoder.avempace.entity.service.RepositoryImpl;
+import com.polymathiccoder.avempace.entity.service.Model;
 import com.polymathiccoder.avempace.meta.model.processing.MetaProcessor;
 import com.polymathiccoder.avempace.persistence.domain.Tuple;
 
@@ -15,7 +15,7 @@ import dagger.Provides;
 		staticInjections = {
 				Entity.class,
 				Tuple.class,
-				RepositoryImpl.class,
+				Model.class,
 		}
 )
 public class MetaModule {

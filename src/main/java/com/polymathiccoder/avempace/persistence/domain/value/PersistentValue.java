@@ -1,5 +1,7 @@
 package com.polymathiccoder.avempace.persistence.domain.value;
 
+import java.lang.reflect.Type;
+
 
 public abstract class PersistentValue {
 // Static behavior
@@ -14,5 +16,5 @@ public abstract class PersistentValue {
 // Behavior
 	public abstract com.amazonaws.services.dynamodbv2.model.AttributeValue toDynamoDBAttributeValue();
 
-	public abstract Object toPojo(final Class<?> clazz);
+	public abstract Object toPojo(final Type type);
 }

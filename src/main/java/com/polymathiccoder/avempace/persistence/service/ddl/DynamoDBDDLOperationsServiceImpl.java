@@ -2,6 +2,7 @@ package com.polymathiccoder.avempace.persistence.service.ddl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,23 +31,17 @@ public class DynamoDBDDLOperationsServiceImpl implements DynamoDBDDLOperationsSe
 	private static final Logger LOGGER = LoggerFactory.getLogger("com.polymathiccoder.nimble");
 
 // Fields
-	private final AmazonDynamoDB amazonDynamoDB;
+	private final Map<Region, AmazonDynamoDB> amazonDynamoDBsIndexedByRegion;
 
-	private final AmazonDynamoDBAsync amazonDynamoDBAsync;
+	private final Map<Region, AmazonDynamoDBAsync> amazonDynamoDBAsyncsIndexedByRegion;
 
 // Life cycle
-	public DynamoDBDDLOperationsServiceImpl(final AmazonDynamoDB amazonDynamoDB, final AmazonDynamoDBAsync amazonDynamoDBAsync) {
-		this.amazonDynamoDB = amazonDynamoDB;
-		this.amazonDynamoDBAsync = amazonDynamoDBAsync;
+	public DynamoDBDDLOperationsServiceImpl(final Map<Region, AmazonDynamoDB> amazonDynamoDBsIndexedByRegion, final Map<Region, AmazonDynamoDBAsync> amazonDynamoDBAsyncsIndexedByRegion) {
+		this.amazonDynamoDBsIndexedByRegion = amazonDynamoDBsIndexedByRegion;
+		this.amazonDynamoDBAsyncsIndexedByRegion = amazonDynamoDBAsyncsIndexedByRegion;
 	}
 
 // Behavior
-	@Override
-	public void useRegion(final Region region) {
-		amazonDynamoDB.setEndpoint(region.getEndpoint());
-		amazonDynamoDBAsync.setEndpoint(region.getEndpoint());
-	}
-
 	@Override
 	public void execute(final DDLOperation ddlOperation) {
 		if (ddlOperation instanceof CreateTable) {
@@ -65,6 +60,8 @@ public class DynamoDBDDLOperationsServiceImpl implements DynamoDBDDLOperationsSe
 
 	@Override
 	public void createTable(final CreateTable createTable) {
+		final AmazonDynamoDB amazonDynamoDB = amazonDynamoDBsIndexedByRegion.get(createTable.getTable().getRegion());
+
 		final Table table = createTable.getTable();
 
 		final CreateTableRequest createTableRequest = new CreateTableRequest().withTableName(table.getDefinition().getName());
@@ -144,6 +141,8 @@ public class DynamoDBDDLOperationsServiceImpl implements DynamoDBDDLOperationsSe
 
 	@Override
 	public void deleteTable(final DeleteTable deleteTable) {
+		final AmazonDynamoDB amazonDynamoDB = amazonDynamoDBsIndexedByRegion.get(deleteTable.getTable().getRegion());
+
 		final Table table = deleteTable.getTable();
 		final DeleteTableRequest deleteTableRequest = new DeleteTableRequest().withTableName(table.getDefinition().getName());
 		try {

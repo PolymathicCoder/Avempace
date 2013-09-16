@@ -65,25 +65,21 @@ public class DynamoDBDMLOperationsServiceImpl implements DynamoDBDMLOperationsSe
 	private static final Logger LOGGER = Logger.getLogger("com.polymathiccoder.nimble");
 
 // Fields
-	private final AmazonDynamoDB amazonDynamoDB;
+	private final Map<Region, AmazonDynamoDB> amazonDynamoDBsIndexedByRegion;
 
-	private final AmazonDynamoDBAsync amazonDynamoDBAsync;
+	private final Map<Region, AmazonDynamoDBAsync> amazonDynamoDBAsyncsIndexedByRegion;
 
 // Life cycle
-	public DynamoDBDMLOperationsServiceImpl(final AmazonDynamoDB amazonDynamoDB, final AmazonDynamoDBAsync amazonDynamoDBAsync) {
-		this.amazonDynamoDB = amazonDynamoDB;
-		this.amazonDynamoDBAsync = amazonDynamoDBAsync;
+	public DynamoDBDMLOperationsServiceImpl(final Map<Region, AmazonDynamoDB> amazonDynamoDBsIndexedByRegion, final Map<Region, AmazonDynamoDBAsync> amazonDynamoDBAsyncsIndexedByRegion) {
+		this.amazonDynamoDBsIndexedByRegion = amazonDynamoDBsIndexedByRegion;
+		this.amazonDynamoDBAsyncsIndexedByRegion = amazonDynamoDBAsyncsIndexedByRegion;
 	}
 
 // Behavior
 	@Override
-	public void useRegion(final Region region) {
-		amazonDynamoDB.setEndpoint(region.getEndpoint());
-		amazonDynamoDBAsync.setEndpoint(region.getEndpoint());
-	}
-
-	@Override
 	public void put(final Put put) {
+		final AmazonDynamoDB amazonDynamoDB = amazonDynamoDBsIndexedByRegion.get(put.getTable().getRegion());
+
 		final Table table = put.getTable();
 		final Tuple item = put.getTuple();
 
@@ -122,6 +118,8 @@ public class DynamoDBDMLOperationsServiceImpl implements DynamoDBDMLOperationsSe
 
 	@Override
 	public Tuple get(final Get get) {
+		final AmazonDynamoDB amazonDynamoDB = amazonDynamoDBsIndexedByRegion.get(get.getTable().getRegion());
+
 		final Table table = get.getTable();
 		// Construct the key
 		final HashMap<String, AttributeValue> key = new HashMap<String, AttributeValue>();
@@ -174,6 +172,8 @@ public class DynamoDBDMLOperationsServiceImpl implements DynamoDBDMLOperationsSe
 
 	@Override
 	public void delete(final Delete delete) {
+		final AmazonDynamoDB amazonDynamoDB = amazonDynamoDBsIndexedByRegion.get(delete.getTable().getRegion());
+
 		final Table table = delete.getTable();
 
 		// Construct the key
@@ -215,6 +215,8 @@ public class DynamoDBDMLOperationsServiceImpl implements DynamoDBDMLOperationsSe
 
 	@Override
 	public void update(final Update update) {
+		final AmazonDynamoDB amazonDynamoDB = amazonDynamoDBsIndexedByRegion.get(update.getTable().getRegion());
+
 		final Table table = update.getTable();
 		// Construct the key
 		final HashMap<String, AttributeValue> key = new HashMap<String, AttributeValue>();
@@ -250,6 +252,8 @@ public class DynamoDBDMLOperationsServiceImpl implements DynamoDBDMLOperationsSe
 
 	@Override
 	public List<Tuple> query(final Query query) {
+		final AmazonDynamoDB amazonDynamoDB = amazonDynamoDBsIndexedByRegion.get(query.getTable().getRegion());
+
 		final Table table = query.getTable();
 
 		final Map<String, Condition> keyConditions = new HashMap<>();
@@ -332,6 +336,8 @@ public class DynamoDBDMLOperationsServiceImpl implements DynamoDBDMLOperationsSe
 
 	@Override
 	public List<Tuple> scan(final Scan scan) {
+		final AmazonDynamoDB amazonDynamoDB = amazonDynamoDBsIndexedByRegion.get(scan.getTable().getRegion());
+
 		final Table table = scan.getTable();
 
 		Map<String, Condition> scanFilter = new HashMap<>();
@@ -389,7 +395,10 @@ public class DynamoDBDMLOperationsServiceImpl implements DynamoDBDMLOperationsSe
 
 	@Override
 	public List<Tuple> batchRead(final Set<Get> gets) {
-		Map<String, List<Map<String, AttributeValue>>> keysIndexedByTableNames = new HashMap<>();
+		//TODO Make sure all gets are on the same region
+		final AmazonDynamoDB amazonDynamoDB = amazonDynamoDBsIndexedByRegion.get(gets.iterator().next().getTable().getRegion());
+
+		final Map<String, List<Map<String, AttributeValue>>> keysIndexedByTableNames = new HashMap<>();
 
 		for (final Get get : gets) {
 			final Table table = get.getTable();
@@ -462,6 +471,9 @@ public class DynamoDBDMLOperationsServiceImpl implements DynamoDBDMLOperationsSe
 
 	@Override
 	public <T extends DMLOperation & BatchableWrite> void batchWrite(Set<T> batchableWrites) {
+		//TODO Make sure all gets are on the same region
+		final AmazonDynamoDB amazonDynamoDB = amazonDynamoDBsIndexedByRegion.get(batchableWrites.iterator().next().getTable().getRegion());
+
 		Map<String, List<WriteRequest>> requestItems = new HashMap<>();
 
 		for (final DMLOperation write : batchableWrites) {

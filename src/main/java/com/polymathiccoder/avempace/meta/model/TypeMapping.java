@@ -38,6 +38,7 @@ public final class TypeMapping {
 		// Construct
 		for (final Annotation annotation : type.getAnnotations()) {
 			processTableAnnotation(typeMapping, annotation);
+			processEntityAnnotation(typeMapping, annotation);
 		}
 
 		// Validate
@@ -62,12 +63,20 @@ public final class TypeMapping {
 			typeMapping.writeCapacityUnits = tableAnnotation.writeCapacityUnits();
 
 			processed = true;
-		} else if (annotation instanceof Entity) {
+		}
+		return processed;
+	}
+
+	private static boolean processEntityAnnotation(final TypeMapping typeMapping, final Annotation annotation) {
+		boolean processed = false;
+		if (annotation instanceof Entity) {
 			final Entity entityAnnotation = (Entity) annotation;
 
 			typeMapping.primaryRegion = entityAnnotation.primaryRegion();
 			typeMapping.secondaryRegions = new HashSet<>(Arrays.asList(entityAnnotation.secondaryRegions()));
 			typeMapping.propagatedAcrossAllRegions = entityAnnotation.propagatedAcrossAllRegions();
+
+			processed = true;
 		}
 		return processed;
 	}

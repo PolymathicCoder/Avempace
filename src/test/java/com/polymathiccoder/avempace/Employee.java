@@ -1,7 +1,6 @@
 package com.polymathiccoder.avempace;
 
-import org.pojomatic.Pojomatic;
-import org.pojomatic.annotations.AutoProperty;
+import java.util.List;
 
 import com.polymathiccoder.avempace.config.Region;
 import com.polymathiccoder.avempace.meta.annotation.Attribute;
@@ -12,12 +11,11 @@ import com.polymathiccoder.avempace.meta.annotation.constraint.LSI;
 import com.polymathiccoder.avempace.meta.annotation.constraint.PrimaryHashKey;
 import com.polymathiccoder.avempace.meta.annotation.constraint.PrimaryRangeKey;
 
-@Entity (primaryRegion = Region.AP_NORTHEAST_1)
-@Table (name = "tbl_employee")
-@AutoProperty
+@Entity(primaryRegion = Region.SA_EAST_1, secondaryRegions = {Region.AP_NORTHEAST_1, Region.US_WEST_2})
+@Table(name = "tbl_employee", readCapacityUnits = 10)
 public class Employee {
 	@PrimaryRangeKey(persistAsType = PersistAsType.NUMBER)
-	private Long id;
+	private long id;
 
 	@PrimaryHashKey
 	private String company;
@@ -26,42 +24,53 @@ public class Employee {
 	private String firstName;
 
 	@Attribute(name = "age", persistAsType = PersistAsType.NUMBER)
-	private Integer age;
+	private int age;
 
 	@LSI(indexName = "idx_location")
 	private String location;
 
+	@Attribute(persistAsType = PersistAsType.NUMBER_SET)
+	private List<Integer> favoriteNumbers;
+
+	@Attribute(persistAsType = PersistAsType.STRING_SET)
+	private List<String> favoriteColors;
+
 	public Employee() {
 	}
 
-	public Employee(long id, String firstName, int age, String company, String location) {
+	public Employee(final long id, final String firstName, final int age, final String company, final String location, final List<Integer> favoriteNumbers, final List<String> favoriteColors) {
 		this.id = id;
 		this.firstName = firstName;
 		this.age = age;
 		this.company = company;
 		this.location = location;
+		this.favoriteNumbers = favoriteNumbers;
+		this.favoriteColors = favoriteColors;
 	}
 
-	public Long getId() { return id; }
-	public void setId(Long id) { this.id = id; }
+	public long getId() { return id; }
 
-	public String getCompany() { return company; }
-	public void setCompany(String company) { this.company = company; }
+	public String getCompany() {
+		return company;
+	}
 
-	public String getFirstName() { return firstName; }
-	public void setFirstName(String firstName) { this.firstName = firstName; }
+	public String getFirstName() {
+		return firstName;
+	}
 
-	public Integer getAge() { return age; }
-	public void setAge(Integer age) { this.age = age; }
+	public int getAge() {
+		return age;
+	}
 
-	public String getLocation() { return location; }
-	public void setLocation(String location) { this.location = location; }
+	public String getLocation() {
+		return location;
+	}
 
-	// Common methods
-	@Override
-	public boolean equals(final Object other) { return Pojomatic.equals(this, other); }
-	@Override
-	public int hashCode() { return Pojomatic.hashCode(this); }
-	@Override
-	public String toString() { return Pojomatic.toString(this); }
+	public List<Integer> getFavoriteNumbers() {
+		return favoriteNumbers;
+	}
+
+	public List<String> getFavoriteColors() {
+		return favoriteColors;
+	}
 }

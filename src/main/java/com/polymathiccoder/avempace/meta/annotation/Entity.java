@@ -12,7 +12,7 @@ import com.polymathiccoder.avempace.config.Region;
 @Target({ElementType.TYPE })
 @Documented
 public @interface Entity {
-	Region primaryRegion() default Region.US_EAST_1;
+	Region primaryRegion();
 	Region[] secondaryRegions() default {};
 	boolean propagatedAcrossAllRegions() default true;
 }

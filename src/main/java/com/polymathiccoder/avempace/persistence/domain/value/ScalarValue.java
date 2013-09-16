@@ -1,5 +1,7 @@
 package com.polymathiccoder.avempace.persistence.domain.value;
 
+import java.lang.reflect.Type;
+
 import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
 
@@ -22,8 +24,8 @@ public abstract class ScalarValue<INTRINSIC, PHYSICAL> extends PersistentValue {
 	}
 
 	@Override
-	public Object toPojo(final Class<?> clazz) {
-		return toEntityPropertyValue(clazz);
+	public Object toPojo(final Type type) {
+		return toEntityPropertyValue((Class<?>) type);
 	}
 
 // Common methods

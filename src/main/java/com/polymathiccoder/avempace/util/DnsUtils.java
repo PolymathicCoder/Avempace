@@ -44,7 +44,7 @@ public final class DnsUtils {
 
         try {
         	String ip = StringUtils.EMPTY;
-            final Lookup lookup = new Lookup(hostname, Type.ANY);
+            final Lookup lookup = new Lookup(hostname, Type.A);
             final Record[] records = lookup.run();
 
             if (lookup.getResult() == Lookup.SUCCESSFUL) {

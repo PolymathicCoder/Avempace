@@ -3,7 +3,6 @@ package com.polymathiccoder.avempace.persistence.service.dml;
 import java.util.List;
 import java.util.Set;
 
-import com.polymathiccoder.avempace.config.Region;
 import com.polymathiccoder.avempace.persistence.domain.Tuple;
 import com.polymathiccoder.avempace.persistence.domain.operation.BatchableWrite;
 import com.polymathiccoder.avempace.persistence.domain.operation.DMLOperation;
@@ -15,7 +14,6 @@ import com.polymathiccoder.avempace.persistence.domain.operation.dml.Scan;
 import com.polymathiccoder.avempace.persistence.domain.operation.dml.Update;
 
 public interface DynamoDBDMLOperationsService {
-	void useRegion(final Region region);
 // Write
 	void put(final Put put);
 	void update(final Update update);

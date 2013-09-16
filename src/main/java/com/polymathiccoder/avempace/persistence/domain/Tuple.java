@@ -4,15 +4,26 @@ import static org.fest.reflect.core.Reflection.constructor;
 import static org.fest.reflect.core.Reflection.field;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.reflect.FieldUtils;
+import org.apache.commons.lang3.reflect.TypeUtils;
 import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
+import org.reflections.ReflectionUtils;
 
+
+import com.polymathiccoder.avempace.Employee;
 import com.polymathiccoder.avempace.entity.domain.Entity;
 import com.polymathiccoder.avempace.entity.domain.EntityCollection;
 import com.polymathiccoder.avempace.entity.domain.EntityCollectionDefinition;
@@ -102,7 +113,10 @@ public class Tuple {
 
 				Field field = ofType.getDeclaredField(propertySchema.getName().get());
 				field.setAccessible(true);
-				field.set(pojo, attributeValue.get().toPojo(propertySchema.getType().get()));
+//FIXME Abdel
+				//field.set(pojo, attributeValue.get().toPojo(propertySchema.getType().get()));
+
+				field.set(pojo, attributeValue.get().toPojo(field.getGenericType()));
 			} catch (final NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException exception) {
 				//TODO Handle better
 			}

@@ -48,17 +48,17 @@ public class NumberValue extends ScalarValue<Number, String> {
 		try {
 			final Number numericValue = NumberFormat.getInstance().parse(intrinsicDataRepresentation.toString());
 
-			if (clazz.equals(Byte.class)) {
+			if (clazz.equals(Byte.class) || clazz.equals(byte.class)) {
 				entityPropertyValue = (T) new Byte(numericValue.byteValue());
-			} else if (clazz.equals(Short.class)) {
+			} else if (clazz.equals(Short.class) || clazz.equals(short.class)) {
 				entityPropertyValue = (T) new Short(numericValue.shortValue());
-			} else if (clazz.equals(Integer.class)) {
+			} else if (clazz.equals(Integer.class) || clazz.equals(int.class)) {
 				entityPropertyValue = (T) new Integer(numericValue.intValue());
-			} else if (clazz.equals(Long.class)) {
+			} else if (clazz.equals(Long.class) || clazz.equals(long.class)) {
 				entityPropertyValue = (T) new Long(numericValue.longValue());
-			} else if (clazz.equals(Float.class)) {
+			} else if (clazz.equals(Float.class) || clazz.equals(float.class)) {
 				entityPropertyValue = (T) new Float(numericValue.floatValue());
-			} else if (clazz.equals(Double.class)) {
+			} else if (clazz.equals(Double.class) || clazz.equals(double.class)) {
 				entityPropertyValue = (T) new Double(numericValue.doubleValue());
 			} else {
 				//TODO Handle better

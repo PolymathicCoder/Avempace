@@ -4,29 +4,7 @@ import javax.measure.unit.NonSI;
 
 import org.jscience.geography.coordinates.LatLong;
 
-import com.polymathiccoder.avempace.config.Region;
-import com.polymathiccoder.avempace.util.DnsUtils;
-import com.polymathiccoder.avempace.util.IPUtils;
-import com.polymathiccoder.avempace.util.IPUtils.GeoLocation;
-
-public class DistanceUtils {
-	public static void main(String[] args) {
-		System.out.println("REGION -----------");
-		final String regionHostname = Region.SA_EAST_1.getEndpoint();
-		final String regionIP = DnsUtils.lookup(regionHostname);
-		final GeoLocation regionGeoLocation = IPUtils.lookupGeoLocation(regionIP);
-		System.out.println(regionGeoLocation);
-
-		System.out.println("YOU --------------");
-		final String myPublicIP = IPUtils.lookupPublicIP();
-		final GeoLocation myGeoLocation = IPUtils.lookupGeoLocation(myPublicIP);
-		System.out.println(myGeoLocation);
-
-		System.out.println(calculateOrthodromicDistance(regionGeoLocation, myGeoLocation, DistanceCalculationFormula.HAVERSINE));
-		System.out.println(calculateOrthodromicDistance(regionGeoLocation, myGeoLocation, DistanceCalculationFormula.SPHERICAL_LAW_OF_COSINES));
-		System.out.println(calculateOrthodromicDistance(regionGeoLocation, myGeoLocation, DistanceCalculationFormula.EQUIRECTANGULAR_APPROXIMATION_WITH_PYTHAGOREAN_THEOREM));
-	}
-
+public class GeoUtils {
 // Static fields
 	private static final int EARTHS_RADIUS_IN_KM = 6371;
 

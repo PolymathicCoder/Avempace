@@ -1,6 +1,7 @@
 package com.polymathiccoder.avempace.persistence.domain.value;
 
 import java.nio.ByteBuffer;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,8 +31,8 @@ public class BinarySetValue extends SetValue<BinaryValue, ByteBuffer, ByteBuffer
 
 	@SuppressWarnings("unchecked")
 	public static PersistentValue fromEntityPropertyValue(final Object entityPropertyValue) {
-		if (ClassUtils.isAssignable(entityPropertyValue.getClass(), Set.class)) {
-			return new BinarySetValue((Set<ByteBuffer>) entityPropertyValue);
+		if (ClassUtils.isAssignable(entityPropertyValue.getClass(), Collection.class)) {
+			return new BinarySetValue(new HashSet<ByteBuffer>((Collection<ByteBuffer>) entityPropertyValue));
 		} else {
 			throw new IllegalArgumentException();
 		}

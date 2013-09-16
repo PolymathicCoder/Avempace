@@ -1,5 +1,6 @@
 package com.polymathiccoder.avempace.persistence.domain.value;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +21,7 @@ public class NumberSetValue extends SetValue<NumberValue, Number, String> {
 	}
 
 	private static NumberSetValue fromPhysicalDataRepresentations(final Set<String> physicalDataRepresentations) {
-		Set<Number> intrinsicValues = new HashSet<>();
+		final Set<Number> intrinsicValues = new HashSet<>();
 		for (final String  physicalDataRepresentation : physicalDataRepresentations) {
 			intrinsicValues.add(NumberValue.toIntrinsicDataRepresentation(physicalDataRepresentation));
 		}
@@ -29,8 +30,8 @@ public class NumberSetValue extends SetValue<NumberValue, Number, String> {
 
 	@SuppressWarnings("unchecked")
 	public static PersistentValue fromEntityPropertyValue(final Object entityPropertyValue) {
-		if (ClassUtils.isAssignable(entityPropertyValue.getClass(), Set.class)) {
-			return new NumberSetValue((Set<Number>) entityPropertyValue);
+		if (ClassUtils.isAssignable(entityPropertyValue.getClass(), Collection.class)) {
+			return new NumberSetValue(new HashSet<Number>((Collection<Number>) entityPropertyValue));
 		} else {
 			throw new IllegalArgumentException();
 		}

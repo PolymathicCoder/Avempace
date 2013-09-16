@@ -1,18 +1,32 @@
 package com.polymathiccoder.avempace.entity.service;
 
-import com.polymathiccoder.avempace.config.NimbleModule;
-import com.polymathiccoder.avempace.config.Region;
+import javax.inject.Inject;
+
+import com.polymathiccoder.avempace.config.AvempaceConfiguration;
+import com.polymathiccoder.avempace.config.AvempaceConfiguration.SchemaGenerationStrategy;
+import com.polymathiccoder.avempace.persistence.service.ddl.DynamoDBDDLOperationsService;
 import com.polymathiccoder.avempace.persistence.service.dml.DynamoDBDMLOperationsService;
 
-import dagger.ObjectGraph;
-
 public final class RepositoryFactory {
-// Static behavior
-	public static <T> Repository<T> create(final Class<T> pojoType) {
-		final ObjectGraph objectGraph = ObjectGraph.create(new NimbleModule());
-		objectGraph.injectStatics();
-		final DynamoDBDMLOperationsService dmlOperations = objectGraph.get(DynamoDBDMLOperationsService.class);
+// Fields
+	@Inject
+	DynamoDBDMLOperationsService dynamoDBDMLOperationsService;
 
-		return new RepositoryImpl<>(dmlOperations, pojoType, Region.SA_EAST_1);
+	@Inject
+	DynamoDBDDLOperationsService dynamoDBDDLOperationsService;
+
+	@Inject
+	AvempaceConfiguration avempaceConfiguration;
+
+// Static behavior
+	public <T> Repository<T> createRepository(final Class<T> pojoType) {
+		final Model<T> model = new Model<>(pojoType);
+		final RepositoryImpl<T> repositoryImpl = new RepositoryImpl<>(dynamoDBDDLOperationsService, dynamoDBDMLOperationsService, model);
+
+		if (avempaceConfiguration.getSchemaGenerationStrategy() == SchemaGenerationStrategy.CLEAN_SLATE) {
+			repositoryImpl.removeAll();
+		}
+
+		return CrossRegionRepository.newInstance(repositoryImpl);
 	}
 }

@@ -96,8 +96,7 @@
 		<dependency>
 			<groupId>com.michelboudreau</groupId>
 			<artifactId>alternator</artifactId>
-			<version>0.5.0</version>
-			<scope>test</scope>
+			<version>0.6.5</version>
 		</dependency>
 
 		<!-- Pojomatic -->
@@ -147,6 +146,21 @@
 			<groupId>org.retryer</groupId>
 			<artifactId>retryer</artifactId>
 			<version>0.2</version>
+		</dependency>
+
+		<!-- JUnit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+		</dependency>
+
+		<!-- Unitils -->
+		<dependency>
+			<groupId>org.unitils</groupId>
+			<artifactId>unitils-core</artifactId>
+			<version>3.3</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
