@@ -8,6 +8,7 @@ import org.pojomatic.annotations.AutoProperty;
 import com.google.api.client.util.Sets;
 import com.polymathiccoder.avempace.config.Region;
 import com.polymathiccoder.avempace.util.IPUtils;
+import com.polymathiccoder.avempace.util.IPUtils.IpUtilsException;
 import com.polymathiccoder.avempace.util.geo.GeoIPUtils;
 import com.polymathiccoder.avempace.util.geo.GeoLocation;
 import com.polymathiccoder.avempace.util.geo.GeoUtils;
@@ -39,11 +40,11 @@ public class DistribbutionDefinition {
 			relevantRegions.add(primaryRegion);
 			relevantRegions.addAll(secondaryRegions);
 
-			final String currentPublicIP = IPUtils.lookupPublicIP();
-			final GeoLocation currentGeoLocation = GeoIPUtils.lookupGeoLocation(currentPublicIP);
-
 			Region theClosestRegion = primaryRegion;
 			try {
+				final String currentPublicIP = IPUtils.lookupPublicIP();
+				final GeoLocation currentGeoLocation = GeoIPUtils.lookupGeoLocation(currentPublicIP);
+
 				double theShortestDistance = Double.MAX_VALUE;
 				for (final Region region : relevantRegions) {
 					final double distance = GeoUtils.calculateOrthodromicDistance(region.getGeoLocation(), currentGeoLocation, DistanceCalculationFormula.HAVERSINE);
@@ -52,7 +53,8 @@ public class DistribbutionDefinition {
 						theShortestDistance = distance;
 					}
 				}
-			} catch (final Exception exception) {
+			} catch (final IpUtilsException ipUtilsException) {
+				//TODO handle better
 				theClosestRegion = primaryRegion;
 			}
 

@@ -10,7 +10,6 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsync;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBAsyncClient;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.michelboudreau.alternatorv2.AlternatorDBClientV2;
 import com.polymathiccoder.avempace.config.AvempaceConfiguration;
 import com.polymathiccoder.avempace.config.Region;
 import com.polymathiccoder.avempace.persistence.service.ddl.DynamoDBDDLOperationsService;
@@ -30,21 +29,23 @@ import dagger.Provides;
 )
 public class PersistenceModule {
 	@Provides @Singleton
-	public Map<Region, AmazonDynamoDB> provideAmazonDynamoDBsIndexedByRegion(final AvempaceConfiguration nimbleConfiguration) {
+	public Map<Region, AmazonDynamoDB> provideAmazonDynamoDBsIndexedByRegion(final AvempaceConfiguration avempaceConfiguration) {
 		final Map<Region, AmazonDynamoDB> amazonDynamoDBsIndexedByRegion = new HashMap<>();
 		for (final Region region : Region.values()) {
-			final String accessKey = nimbleConfiguration.getAccessKey();
-			final String secretKey = nimbleConfiguration.getSecretKey();
+			String accessKey = avempaceConfiguration.getAccessKey();
+			String secretKey = avempaceConfiguration.getSecretKey();
+			String endpoint = region.getEndpoint();
 
 			AmazonDynamoDB amazonDynamoDB;
-			//if (accessKey.isEmpty() || secretKey.isEmpty()) {
-				amazonDynamoDB = new AlternatorDBClientV2();
-		        amazonDynamoDB.setEndpoint("http://localhost:9090");
-			//} else {
-				final BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-		        amazonDynamoDB = new AmazonDynamoDBClient(credentials);
-		        amazonDynamoDB.setEndpoint(region.getEndpoint());
-			//}
+			if (accessKey.isEmpty() || secretKey.isEmpty()) {
+				accessKey = "NONE";
+				secretKey = "NONE";
+				endpoint = "http://localhost:8000";
+			}
+
+			final BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+	        amazonDynamoDB = new AmazonDynamoDBClient(credentials);
+	        amazonDynamoDB.setEndpoint(endpoint);
 
 	        amazonDynamoDBsIndexedByRegion.put(region, amazonDynamoDB);
 		}
@@ -52,22 +53,24 @@ public class PersistenceModule {
     }
 
 	@Provides @Singleton
-	public Map<Region, AmazonDynamoDBAsync> provideAmazonDynamoDBAsyncsIndexedByRegion(final AvempaceConfiguration nimbleConfiguration) {
+	public Map<Region, AmazonDynamoDBAsync> provideAmazonDynamoDBAsyncsIndexedByRegion(final AvempaceConfiguration avempaceConfiguration) {
 		final Map<Region, AmazonDynamoDBAsync> amazonDynamoDBAsyncsIndexedByRegion = new HashMap<>();
 		for (final Region region : Region.values()) {
-			final String accessKey = nimbleConfiguration.getAccessKey();
-			final String secretKey = nimbleConfiguration.getSecretKey();
+			String accessKey = avempaceConfiguration.getAccessKey();
+			String secretKey = avempaceConfiguration.getSecretKey();
+			String endpoint = region.getEndpoint();
 
 			AmazonDynamoDBAsync amazonDynamoDBAsync;
-			//if (accessKey.isEmpty() || secretKey.isEmpty()) {
-				//FIXME
-				//amazonDynamoDBAsync = new AmazonDynamoDBAsyncClient(new BasicAWSCredentials("AKIAIQOONXLTVCMQWXZA", "Gi9Ip0hUHiRvfh06rLvS3lsKj28q1PGaqzhJOB2E"));
-			//} else {
-				final BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-				amazonDynamoDBAsync = new AmazonDynamoDBAsyncClient(credentials);
-			//}
+			if (accessKey.isEmpty() || secretKey.isEmpty()) {
+				accessKey = "NONE";
+				secretKey = "NONE";
+				endpoint = "http://localhost:8000";
+			}
 
-	        amazonDynamoDBAsync.setEndpoint(region.getEndpoint());
+			final BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+			amazonDynamoDBAsync = new AmazonDynamoDBAsyncClient(credentials);
+	        amazonDynamoDBAsync.setEndpoint(endpoint);
+
 	        amazonDynamoDBAsyncsIndexedByRegion.put(region, amazonDynamoDBAsync);
 		}
 		return amazonDynamoDBAsyncsIndexedByRegion;

@@ -12,25 +12,19 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
-import com.michelboudreau.alternator.AlternatorDB;
 import com.polymathiccoder.avempace.config.Avempace;
 import com.polymathiccoder.avempace.entity.service.Repository;
 
 public class RepositoryImplTest {
-	public static AlternatorDB MOCKED_DYNAMODB;
-
 	private static Repository<Employee> REPOSITORY;
 
 	@BeforeClass
 	public static void setup() throws Exception {
-		//MOCKED_DYNAMODB = new AlternatorDB();
-		//MOCKED_DYNAMODB.start();
 		REPOSITORY = Avempace.getRepositoryFactory().createRepository(Employee.class);
 	}
 
@@ -193,10 +187,5 @@ public class RepositoryImplTest {
 
 		// Test
 		assertThat(actualScanByIndexResult.size(), org.hamcrest.Matchers.equalTo(1));
-	}
-
-	@AfterClass
-	public static void teardown() throws Exception {
-		//MOCKED_DYNAMODB.stop();
 	}
 }
