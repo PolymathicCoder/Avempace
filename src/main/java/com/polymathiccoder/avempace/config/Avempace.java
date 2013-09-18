@@ -7,7 +7,7 @@ import java.util.concurrent.Executors;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.ExecuteWatchdog;
+import org.apache.commons.exec.ShutdownHookProcessDestroyer;
 
 import com.polymathiccoder.avempace.RepositoryImplTest;
 import com.polymathiccoder.avempace.entity.service.RepositoryFactory;
@@ -16,7 +16,6 @@ import dagger.ObjectGraph;
 
 public class Avempace {
 	private static final File LOCAL_DYNAMODB_BINARY = new File(RepositoryImplTest.class.getClassLoader().getResource("dynamodb_local_2013-09-12/DynamoDBLocal.jar").getFile());
-	private static final ExecuteWatchdog LOCAL_DYNAMODB_PROCESS_REF = new ExecuteWatchdog(60000);
 
 	static {
 		final ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -27,7 +26,7 @@ public class Avempace {
 						final CommandLine cmdLine = CommandLine.parse("java -Djava.library.path="+ LOCAL_DYNAMODB_BINARY.getParentFile().getAbsolutePath() + " -jar " + LOCAL_DYNAMODB_BINARY.getAbsolutePath());
 						final DefaultExecutor executor = new DefaultExecutor();
 						executor.setExitValue(1);
-						executor.setWatchdog(LOCAL_DYNAMODB_PROCESS_REF);
+						executor.setProcessDestroyer(new ShutdownHookProcessDestroyer());
 						try {
 							executor.execute(cmdLine);
 						} catch (final IOException ioException) {
@@ -44,4 +43,5 @@ public class Avempace {
 
 		return objectGraph.get(RepositoryFactory.class);
 	}
+
 }
