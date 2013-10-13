@@ -4,8 +4,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.polymathiccoder.avempace.persistence.domain.Tuple;
-import com.polymathiccoder.avempace.persistence.domain.operation.BatchableWrite;
 import com.polymathiccoder.avempace.persistence.domain.operation.DMLOperation;
+import com.polymathiccoder.avempace.persistence.domain.operation.dml.BatchableWrite;
 import com.polymathiccoder.avempace.persistence.domain.operation.dml.Delete;
 import com.polymathiccoder.avempace.persistence.domain.operation.dml.Get;
 import com.polymathiccoder.avempace.persistence.domain.operation.dml.Put;

@@ -27,6 +27,6 @@ public final class RepositoryFactory {
 			repositoryImpl.drop();
 		}
 
-		return CrossRegionRepository.newInstance(repositoryImpl);
+		return repositoryImpl;
 	}
 }

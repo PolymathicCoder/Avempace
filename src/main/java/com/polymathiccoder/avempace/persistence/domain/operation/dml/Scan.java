@@ -12,7 +12,7 @@ import com.polymathiccoder.avempace.persistence.domain.Table;
 import com.polymathiccoder.avempace.persistence.domain.attribute.AttributeSchema;
 import com.polymathiccoder.avempace.persistence.domain.attribute.AttributeValueCriterion;
 import com.polymathiccoder.avempace.persistence.domain.operation.DMLOperation;
-import com.polymathiccoder.avempace.persistence.domain.operation.OperationValidationResult;
+import com.polymathiccoder.avempace.persistence.domain.operation.validation.OperationValidationResult;
 import com.polymathiccoder.avempace.persistence.error.InvalidOperationException;
 
 @AutoProperty

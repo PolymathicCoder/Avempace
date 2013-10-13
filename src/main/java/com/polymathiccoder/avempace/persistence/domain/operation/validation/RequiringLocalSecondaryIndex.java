@@ -1,4 +1,4 @@
-package com.polymathiccoder.avempace.persistence.domain.operation;
+package com.polymathiccoder.avempace.persistence.domain.operation.validation;
 
 import org.pojomatic.annotations.AutoProperty;
 

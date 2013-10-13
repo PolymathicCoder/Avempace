@@ -1,17 +1,14 @@
-package com.polymathiccoder.avempace.persistence.domain.operation;
+package com.polymathiccoder.avempace.persistence.domain.operation.validation;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.polymathiccoder.avempace.persistence.domain.TableDefinition;
 import com.polymathiccoder.avempace.persistence.domain.attribute.AttributeSchema;
 import com.polymathiccoder.avempace.persistence.domain.attribute.constraint.LocalSecondaryIndex;
-import com.polymathiccoder.avempace.persistence.domain.value.SetValue;
-import com.polymathiccoder.avempace.persistence.domain.value.StringSetValue;
+import com.polymathiccoder.avempace.persistence.domain.operation.Operation;
 
 public final class OperationValidator {
 	public static <T extends Operation & RequiringPrimaryKeyHash & RequiringPrimaryKeyRange> List<String> hasPrimaryKeyAttributes(final T operation) {

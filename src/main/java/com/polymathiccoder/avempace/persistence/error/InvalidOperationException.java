@@ -1,7 +1,7 @@
 package com.polymathiccoder.avempace.persistence.error;
 
 import com.google.api.client.repackaged.com.google.common.base.Joiner;
-import com.polymathiccoder.avempace.persistence.domain.operation.OperationValidationResult;
+import com.polymathiccoder.avempace.persistence.domain.operation.validation.OperationValidationResult;
 
 @SuppressWarnings("serial")
 public class InvalidOperationException extends PersistenceException {

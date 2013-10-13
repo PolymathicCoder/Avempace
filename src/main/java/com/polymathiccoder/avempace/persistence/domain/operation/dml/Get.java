@@ -19,10 +19,10 @@ import com.polymathiccoder.avempace.persistence.domain.attribute.Attribute;
 import com.polymathiccoder.avempace.persistence.domain.attribute.AttributeSchema;
 import com.polymathiccoder.avempace.persistence.domain.attribute.constraint.AttributeConstraint.AttributeConstraintType;
 import com.polymathiccoder.avempace.persistence.domain.operation.DMLOperation;
-import com.polymathiccoder.avempace.persistence.domain.operation.OperationValidationResult;
-import com.polymathiccoder.avempace.persistence.domain.operation.OperationValidator;
-import com.polymathiccoder.avempace.persistence.domain.operation.RequiringPrimaryKeyHash;
-import com.polymathiccoder.avempace.persistence.domain.operation.RequiringPrimaryKeyRange;
+import com.polymathiccoder.avempace.persistence.domain.operation.validation.OperationValidationResult;
+import com.polymathiccoder.avempace.persistence.domain.operation.validation.OperationValidator;
+import com.polymathiccoder.avempace.persistence.domain.operation.validation.RequiringPrimaryKeyHash;
+import com.polymathiccoder.avempace.persistence.domain.operation.validation.RequiringPrimaryKeyRange;
 import com.polymathiccoder.avempace.persistence.error.InvalidOperationException;
 
 @AutoProperty

@@ -15,7 +15,7 @@ import com.polymathiccoder.avempace.persistence.domain.attribute.AttributeSchema
 import com.polymathiccoder.avempace.persistence.domain.attribute.AttributeValueCriterion;
 import com.polymathiccoder.avempace.persistence.domain.attribute.constraint.AttributeConstraint.AttributeConstraintType;
 import com.polymathiccoder.avempace.persistence.domain.operation.DMLOperation;
-import com.polymathiccoder.avempace.persistence.domain.operation.RequiringPrimaryKeyHash;
+import com.polymathiccoder.avempace.persistence.domain.operation.validation.RequiringPrimaryKeyHash;
 
 public abstract class Query extends DMLOperation implements RequiringPrimaryKeyHash {
 // Static fields

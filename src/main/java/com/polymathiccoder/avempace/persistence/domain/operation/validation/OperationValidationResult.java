@@ -1,9 +1,11 @@
-package com.polymathiccoder.avempace.persistence.domain.operation;
+package com.polymathiccoder.avempace.persistence.domain.operation.validation;
 
 import java.util.List;
 
 import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
+
+import com.polymathiccoder.avempace.persistence.domain.operation.Operation;
 
 @AutoProperty
 public class OperationValidationResult {

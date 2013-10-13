@@ -17,9 +17,9 @@ import com.polymathiccoder.avempace.persistence.domain.attribute.Attribute;
 import com.polymathiccoder.avempace.persistence.domain.attribute.AttributeSchema;
 import com.polymathiccoder.avempace.persistence.domain.attribute.AttributeValueCriterion;
 import com.polymathiccoder.avempace.persistence.domain.attribute.constraint.AttributeConstraint.AttributeConstraintType;
-import com.polymathiccoder.avempace.persistence.domain.operation.OperationValidationResult;
-import com.polymathiccoder.avempace.persistence.domain.operation.OperationValidator;
-import com.polymathiccoder.avempace.persistence.domain.operation.RequiringLocalSecondaryIndex;
+import com.polymathiccoder.avempace.persistence.domain.operation.validation.OperationValidationResult;
+import com.polymathiccoder.avempace.persistence.domain.operation.validation.OperationValidator;
+import com.polymathiccoder.avempace.persistence.domain.operation.validation.RequiringLocalSecondaryIndex;
 import com.polymathiccoder.avempace.persistence.error.InvalidOperationException;
 
 public final class QueryByLocalSecondaryIndex extends Query implements RequiringLocalSecondaryIndex {
