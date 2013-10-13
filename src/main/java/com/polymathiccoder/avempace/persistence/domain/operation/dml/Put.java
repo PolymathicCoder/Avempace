@@ -4,7 +4,6 @@ import static ch.lambdaj.Lambda.having;
 import static ch.lambdaj.Lambda.on;
 import static ch.lambdaj.Lambda.selectFirst;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -50,17 +49,29 @@ public final class Put extends DMLOperation implements RequiringPrimaryKeyHash, 
 
 	@Override
 	public Attribute getPrimaryKeyHashAttribute() {
-		return selectFirst(tuple.getAttributes(), having(on(Attribute.class).getSchema().getConstraint().getType(), not(equalTo(AttributeConstraintType.PRIMARY_HASH_KEY))));
+		return selectFirst(
+				tuple.getAttributes(), 
+				having(
+						on(Attribute.class).getSchema().getConstraint().getType(), 
+						equalTo(AttributeConstraintType.PRIMARY_HASH_KEY)));
 	}
 
 	@Override
 	public Optional<? extends Attribute> getPrimaryKeyRangeAttribute() {
-		final Attribute attribute = selectFirst(tuple.getAttributes(), having(on(Attribute.class).getSchema().getConstraint().getType(), equalTo(AttributeConstraintType.PRIMARY_RANGE_KEY)));
+		final Attribute attribute = selectFirst(
+				tuple.getAttributes(), 
+				having(
+						on(Attribute.class).getSchema().getConstraint().getType(), 
+						equalTo(AttributeConstraintType.PRIMARY_RANGE_KEY)));
 		return Optional.fromNullable(attribute);
 	}
 
 	public Optional<? extends Attribute> getVersionAttribute() {
-		final Attribute attribute = selectFirst(expectedAttributes, having(on(Attribute.class).getSchema().getConstraint().getType(), equalTo(AttributeConstraintType.VERSION)));
+		final Attribute attribute = selectFirst(
+				expectedAttributes, 
+				having(
+						on(Attribute.class).getSchema().getConstraint().getType(), 
+						equalTo(AttributeConstraintType.VERSION)));
 		return Optional.fromNullable(attribute);
 	}
 

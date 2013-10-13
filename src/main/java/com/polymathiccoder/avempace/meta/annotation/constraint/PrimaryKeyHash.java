@@ -14,7 +14,7 @@ import com.polymathiccoder.avempace.meta.annotation.PersistAsType;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
 @Documented
-public @interface PrimaryHashKey {
+public @interface PrimaryKeyHash {
 	String attributeName() default StringUtils.EMPTY;
 	PersistAsType persistAsType() default PersistAsType.STRING;
 }

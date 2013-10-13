@@ -9,6 +9,7 @@ import org.pojomatic.annotations.AutoProperty;
 public class OperationValidationResult {
 // Static fields
 	public static final String MISSING_REQUIRED_PARAMETER_VALUE = "Persistence: The attribute named '%s' must be specified";
+	public static final String EMPTY_PARAMETER_VALUE = "Persistence: The attribute named '%s' must not be empty";
 	public static final String INVALID_PARAMETER_VALUE = "Persistence: The attribute named '%s' has an invalid value";
 
 // Fields

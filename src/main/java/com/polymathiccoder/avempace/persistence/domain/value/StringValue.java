@@ -32,6 +32,11 @@ public class StringValue extends ScalarValue<String, String> {
 
 // Behavior
 	@Override
+	public boolean isEmpty() {
+		return intrinsicDataRepresentation.isEmpty();
+	}
+
+	@Override
 	public String toPhysicalDataRepresentation() {
 		return intrinsicDataRepresentation;
 	}

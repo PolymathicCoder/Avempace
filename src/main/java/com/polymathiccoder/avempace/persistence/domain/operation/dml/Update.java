@@ -49,12 +49,20 @@ public final class Update extends DMLOperation implements RequiringPrimaryKeyHas
 
 	@Override
 	public Attribute getPrimaryKeyHashAttribute() {
-		return selectFirst(keyAttributes, having(on(Attribute.class).getSchema().getConstraint().getType(), equalTo(AttributeConstraintType.PRIMARY_HASH_KEY)));
+		return selectFirst(
+				keyAttributes, 
+				having(
+						on(Attribute.class).getSchema().getConstraint().getType(), 
+						equalTo(AttributeConstraintType.PRIMARY_HASH_KEY)));
 	}
 
 	@Override
 	public Optional<? extends Attribute> getPrimaryKeyRangeAttribute() {
-		final Attribute attribute = selectFirst(keyAttributes, having(on(Attribute.class).getSchema().getConstraint().getType(), equalTo(AttributeConstraintType.PRIMARY_RANGE_KEY)));
+		final Attribute attribute = selectFirst(
+				keyAttributes, 
+				having(
+						on(Attribute.class).getSchema().getConstraint().getType(), 
+						equalTo(AttributeConstraintType.PRIMARY_RANGE_KEY)));
 		return Optional.fromNullable(attribute);
 	}
 

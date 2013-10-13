@@ -5,7 +5,6 @@ import static ch.lambdaj.Lambda.on;
 import static ch.lambdaj.Lambda.select;
 import static ch.lambdaj.Lambda.selectFirst;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -51,23 +50,40 @@ public final class Delete extends DMLOperation implements RequiringPrimaryKeyHas
 
 	@Override
 	public Attribute getPrimaryKeyHashAttribute() {
-		return selectFirst(keyAttributes, having(on(Attribute.class).getSchema().getConstraint().getType(), equalTo(AttributeConstraintType.PRIMARY_HASH_KEY)));
+		return selectFirst(
+				keyAttributes,
+				having(
+						on(Attribute.class).getSchema().getConstraint().getType(),
+						equalTo(AttributeConstraintType.PRIMARY_HASH_KEY)));
 	}
 
 	@Override
 	public Optional<? extends Attribute> getPrimaryKeyRangeAttribute() {
-		final Attribute attribute = selectFirst(keyAttributes, having(on(Attribute.class).getSchema().getConstraint().getType(), equalTo(AttributeConstraintType.PRIMARY_RANGE_KEY)));
+		final Attribute attribute = selectFirst(
+				keyAttributes,
+				having(
+						on(Attribute.class).getSchema().getConstraint().getType(),
+						equalTo(AttributeConstraintType.PRIMARY_RANGE_KEY)));
 		return Optional.fromNullable(attribute);
 	}
 
 	public Optional<? extends Attribute> getVersionAttribute() {
-		final Attribute attribute = selectFirst(expectedAttributes, having(on(Attribute.class).getSchema().getConstraint().getType(), equalTo(AttributeConstraintType.VERSION)));
+		final Attribute attribute = selectFirst(
+				expectedAttributes,
+				having(
+						on(Attribute.class).getSchema().getConstraint().getType(),
+						equalTo(AttributeConstraintType.VERSION)));
 		return Optional.fromNullable(attribute);
 	}
 
 	public Set<Attribute> getNonConstrainedAttributes() {
 		Set<Attribute> nonConstrainedAttributes = new HashSet<>();
-		nonConstrainedAttributes.addAll(select(expectedAttributes, having(on(Attribute.class).getSchema().getConstraint().getType(), not(equalTo(AttributeConstraintType.NONE)))));
+		nonConstrainedAttributes.addAll(
+				select(
+						expectedAttributes,
+						having(
+								on(Attribute.class).getSchema().getConstraint().getType(),
+								equalTo(AttributeConstraintType.NONE))));
 		return nonConstrainedAttributes;
 	}
 

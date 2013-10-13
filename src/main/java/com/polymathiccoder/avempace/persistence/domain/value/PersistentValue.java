@@ -3,7 +3,7 @@ package com.polymathiccoder.avempace.persistence.domain.value;
 import java.lang.reflect.Type;
 
 
-public abstract class PersistentValue {
+public abstract class PersistentValue  {
 // Static behavior
 	public static PersistentValue fromDynamoDBAttributeValue(final com.amazonaws.services.dynamodbv2.model.AttributeValue dynamoDBAttributeValue) {
 		throw new IllegalStateException();
@@ -14,6 +14,8 @@ public abstract class PersistentValue {
 	}
 
 // Behavior
+	public abstract boolean isEmpty();
+
 	public abstract com.amazonaws.services.dynamodbv2.model.AttributeValue toDynamoDBAttributeValue();
 
 	public abstract Object toPojo(final Type type);

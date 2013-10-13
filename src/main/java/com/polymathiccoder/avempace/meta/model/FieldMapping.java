@@ -14,8 +14,8 @@ import com.google.common.base.Optional;
 import com.polymathiccoder.avempace.meta.annotation.Attribute;
 import com.polymathiccoder.avempace.meta.annotation.PersistAsType;
 import com.polymathiccoder.avempace.meta.annotation.constraint.LSI;
-import com.polymathiccoder.avempace.meta.annotation.constraint.PrimaryHashKey;
-import com.polymathiccoder.avempace.meta.annotation.constraint.PrimaryRangeKey;
+import com.polymathiccoder.avempace.meta.annotation.constraint.PrimaryKeyHash;
+import com.polymathiccoder.avempace.meta.annotation.constraint.PrimaryKeyRange;
 import com.polymathiccoder.avempace.meta.model.validation.MetaModelValidationException;
 import com.polymathiccoder.avempace.persistence.domain.attribute.constraint.AttributeConstraint.AttributeConstraintType;
 
@@ -67,8 +67,8 @@ public class FieldMapping {
 	// Helpers
 	private static boolean processPrimaryHashKeyAnnotation(final FieldMapping fieldMapping, final Annotation annotation) {
 		boolean processed = false;
-		if (annotation instanceof PrimaryHashKey) {
-			final PrimaryHashKey primaryHashKeyAnnotation = (PrimaryHashKey) annotation;
+		if (annotation instanceof PrimaryKeyHash) {
+			final PrimaryKeyHash primaryHashKeyAnnotation = (PrimaryKeyHash) annotation;
 			fieldMapping.attributeName = primaryHashKeyAnnotation.attributeName();
 			if (StringUtils.isEmpty(primaryHashKeyAnnotation.attributeName())) {
 				fieldMapping.attributeName = fieldMapping.annotatedField.getName();
@@ -82,8 +82,8 @@ public class FieldMapping {
 
 	private static boolean processPrimaryRangeKeyAnnotation(final FieldMapping fieldMapping, final Annotation annotation) {
 		boolean processed = false;
-		if (annotation instanceof PrimaryRangeKey) {
-			final PrimaryRangeKey primaryRangeKeyAnnotation = (PrimaryRangeKey) annotation;
+		if (annotation instanceof PrimaryKeyRange) {
+			final PrimaryKeyRange primaryRangeKeyAnnotation = (PrimaryKeyRange) annotation;
 			fieldMapping.attributeName = primaryRangeKeyAnnotation.attributeName();
 			if (StringUtils.isEmpty(primaryRangeKeyAnnotation.attributeName())) {
 				fieldMapping.attributeName = fieldMapping.annotatedField.getName();

@@ -23,27 +23,27 @@ public class GeoIPUtils {
 			final City city = databaseReader.city(InetAddress.getByName(ip));
 			return new GeoLocation(city.getLocation().getLatitude(), city.getLocation().getLongitude());
 		} catch (final IOException ioException) {
-			throw new IpUtilsException(
-        			String.format(IpUtilsException.ERROR_GEO__UNREACHABLE_SERVICE));
+			throw new GeoIpUtilsException(
+        			String.format(GeoIpUtilsException.ERROR_GEO__UNREACHABLE_SERVICE));
 		} catch (final GeoIp2Exception geoIp2Exception) {
-			throw new IpUtilsException(
-					String.format(IpUtilsException.ERROR_GEO__NO_RESOLUTION_OF_IP_TO_GEO_LOCATION, ip));
+			throw new GeoIpUtilsException(
+					String.format(GeoIpUtilsException.ERROR_GEO__NO_RESOLUTION_OF_IP_TO_GEO_LOCATION, ip));
 		}
 	}
 
 // Types
     @SuppressWarnings("serial")
-	public static final class IpUtilsException extends UtilsException {
+	public static final class GeoIpUtilsException extends UtilsException {
     // Static fields
         public static final String ERROR_GEO__UNREACHABLE_SERVICE = "Geo IP Resolution: Service is unreachable";
         public static final String ERROR_GEO__NO_RESOLUTION_OF_IP_TO_GEO_LOCATION = "Geo IP Resolution: Could not resolve the IP '%s' to a location";
 
     // Life cycle
-    	private IpUtilsException(final String message) {
+    	private GeoIpUtilsException(final String message) {
     		super(message);
     	}
 
-    	private IpUtilsException(final String message, final Throwable cause) {
+    	private GeoIpUtilsException(final String message, final Throwable cause) {
     		super(message, cause);
     	}
     }

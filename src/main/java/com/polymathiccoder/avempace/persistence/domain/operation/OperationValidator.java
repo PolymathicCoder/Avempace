@@ -3,11 +3,15 @@ package com.polymathiccoder.avempace.persistence.domain.operation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.ClassUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.polymathiccoder.avempace.persistence.domain.TableDefinition;
 import com.polymathiccoder.avempace.persistence.domain.attribute.AttributeSchema;
 import com.polymathiccoder.avempace.persistence.domain.attribute.constraint.LocalSecondaryIndex;
+import com.polymathiccoder.avempace.persistence.domain.value.SetValue;
+import com.polymathiccoder.avempace.persistence.domain.value.StringSetValue;
 
 public final class OperationValidator {
 	public static <T extends Operation & RequiringPrimaryKeyHash & RequiringPrimaryKeyRange> List<String> hasPrimaryKeyAttributes(final T operation) {
@@ -38,6 +42,11 @@ public final class OperationValidator {
 					String.format(
 							OperationValidationResult.MISSING_REQUIRED_PARAMETER_VALUE,
 							tableDefinition.getHashKeySchema().getName().get()));
+		} else if (operation.getPrimaryKeyHashAttribute() != null && operation.getPrimaryKeyHashAttribute().getValue().get().isEmpty()) {
+			errors.add(
+				String.format(
+						OperationValidationResult.EMPTY_PARAMETER_VALUE,
+						tableDefinition.getHashKeySchema().getName().get()));
 		}
 
 		return errors;

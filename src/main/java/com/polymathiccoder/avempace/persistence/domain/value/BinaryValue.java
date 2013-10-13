@@ -29,6 +29,11 @@ public class BinaryValue extends ScalarValue<ByteBuffer, ByteBuffer> {
 
 // Behavior
 	@Override
+	public boolean isEmpty() {
+		return intrinsicDataRepresentation.array().length == 0;
+	}
+
+	@Override
 	public ByteBuffer toPhysicalDataRepresentation() {
 		return intrinsicDataRepresentation;
 	}

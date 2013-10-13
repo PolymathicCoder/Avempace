@@ -24,7 +24,7 @@ public final class RepositoryFactory {
 		final RepositoryImpl<T> repositoryImpl = new RepositoryImpl<>(dynamoDBDDLOperationsService, dynamoDBDMLOperationsService, model);
 
 		if (avempaceConfiguration.getSchemaGenerationStrategy() == SchemaGenerationStrategy.CLEAN_SLATE) {
-			repositoryImpl.removeAll();
+			repositoryImpl.drop();
 		}
 
 		return CrossRegionRepository.newInstance(repositoryImpl);

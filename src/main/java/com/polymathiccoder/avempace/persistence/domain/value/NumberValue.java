@@ -37,6 +37,11 @@ public class NumberValue extends ScalarValue<Number, String> {
 
 // Behavior
 	@Override
+	public boolean isEmpty() {
+		return true;
+	}
+
+	@Override
 	public String toPhysicalDataRepresentation() {
 		return intrinsicDataRepresentation.toString();
 	}

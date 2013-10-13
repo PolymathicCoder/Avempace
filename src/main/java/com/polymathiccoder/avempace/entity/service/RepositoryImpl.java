@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.polymathiccoder.avempace.config.Region;
 import com.polymathiccoder.avempace.entity.domain.Entity;
@@ -68,6 +69,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 	}
 
 	private T find(final EntityPropertyValueCriteria entityPropertyValueCriteria, final Region region) {
+System.out.println("-------->" + region.getPrettyName());
 		final TableDefinition tableDefinition = model.getMapping().getTableDefinition();
 		final Table table = Table.Builder.create(tableDefinition, region).build();
 
@@ -92,6 +94,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 	}
 
 	private List<T> findAllBy(final EntityPropertyValueCriteria entityPropertyValueCriteria, final Region region) {
+System.out.println("-------->" + region.getPrettyName());
 		final TableDefinition tableDefinition = model.getMapping().getTableDefinition();
 		final Table table = Table.Builder
 				.create(tableDefinition, region)
@@ -154,6 +157,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 	}
 
 	private List<T> findAll(final Region region) {
+System.out.println("-------->" + region.getPrettyName());
 		return findAllBy(EntityPropertyValueCriteria.anything(), region);
 	}
 
@@ -165,7 +169,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 		save(pojo, primaryRegion);
 
 		if (distribbutionDefinition.isPropagatedAcrossAllRegions() && ! distribbutionDefinition.getSecondaryRegions().isEmpty()) {
-			final ExecutorService executor = Executors.newFixedThreadPool(distribbutionDefinition.getSecondaryRegions().size());
+			final ExecutorService executor = Executors.newFixedThreadPool(distribbutionDefinition.getSecondaryRegions().size() + 1);
 			for (final Region secondaryRegion : distribbutionDefinition.getSecondaryRegions()) {
 				executor.execute(
 						new Runnable() {
@@ -180,6 +184,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 	}
 
 	private void save(final T pojo, final Region region) {
+System.out.println("-------->" + region.getPrettyName());
 		final Entity<T> entity = Entity.create(pojo, region);
 		final Tuple tuple = Tuple.create(entity);
 		final Table table = tuple.getBelongsIn();
@@ -200,7 +205,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 		update(entityPropertyValueCriteria, entityPropertyValueOperations, primaryRegion);
 
 		if (distribbutionDefinition.isPropagatedAcrossAllRegions() && ! distribbutionDefinition.getSecondaryRegions().isEmpty()) {
-			final ExecutorService executor = Executors.newFixedThreadPool(distribbutionDefinition.getSecondaryRegions().size());
+			final ExecutorService executor = Executors.newFixedThreadPool(distribbutionDefinition.getSecondaryRegions().size() + 1);
 			for (final Region secondaryRegion : distribbutionDefinition.getSecondaryRegions()) {
 				executor.execute(
 						new Runnable() {
@@ -215,6 +220,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 	}
 
 	private void update(final EntityPropertyValueCriteria entityPropertyValueCriteria, final EntityPropertyValueOperations entityPropertyValueOperations, final Region region) {
+System.out.println("-------->" + region.getPrettyName());
 		final TableDefinition tableDefinition = model.getMapping().getTableDefinition();
 		final Table table = Table.Builder
 				.create(tableDefinition, region)
@@ -257,7 +263,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 		remove(pojo, primaryRegion);
 
 		if (distribbutionDefinition.isPropagatedAcrossAllRegions() && ! distribbutionDefinition.getSecondaryRegions().isEmpty()) {
-			final ExecutorService executor = Executors.newFixedThreadPool(distribbutionDefinition.getSecondaryRegions().size());
+			final ExecutorService executor = Executors.newFixedThreadPool(distribbutionDefinition.getSecondaryRegions().size() + 1);
 			for (final Region secondaryRegion : distribbutionDefinition.getSecondaryRegions()) {
 				executor.execute(
 						new Runnable() {
@@ -272,6 +278,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 	}
 
 	private void remove(final T pojo, final Region region) {
+System.out.println("-------->" + region.getPrettyName());
 		final  Entity<T> entity = Entity.create(pojo, region);
 		final Tuple tuple = Tuple.create(entity);
 
@@ -287,29 +294,33 @@ public class RepositoryImpl<T> implements Repository<T> {
 	}
 
 	@Override
-	public void removeAll() {
+	public void drop() {
 		final DistribbutionDefinition distribbutionDefinition = model.getDistribbutionDefinition();
 
-		final Region primaryRegion = distribbutionDefinition.getPrimaryRegion();
-		removeAll(primaryRegion);
+		final Set<Region> allRegions = new HashSet<>();
+		allRegions.add(distribbutionDefinition.getPrimaryRegion());
+		allRegions.addAll(distribbutionDefinition.getSecondaryRegions());
 
-		if (distribbutionDefinition.isPropagatedAcrossAllRegions() && ! distribbutionDefinition.getSecondaryRegions().isEmpty()) {
-			final ExecutorService executor = Executors.newFixedThreadPool(distribbutionDefinition.getSecondaryRegions().size());
-			for (final Region secondaryRegion : distribbutionDefinition.getSecondaryRegions()) {
-				executor.execute(
-						new Runnable() {
-							@Override
-							public void run() {
-								removeAll(secondaryRegion);
-							}
-						});
-			}
-			while(executor.isTerminated()) {}
-			executor.shutdown();
+		final ExecutorService executor = Executors.newFixedThreadPool(distribbutionDefinition.getSecondaryRegions().size() + 1);
+		for (final Region region : allRegions) {
+			//executor.execute(
+					//new Runnable() {
+						//@Override
+						//public void run() {
+							drop(region);
+						//}
+					//});
+		}
+		executor.shutdown();
+		try {
+			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
+		} catch (InterruptedException interruptedException) {
+			//TODO handle better
 		}
 	}
 
-	private void removeAll(final Region region) {
+	private void drop(final Region region) {
+System.out.println("-------->" + region.getPrettyName());
 		final TableDefinition tableDefinition =model.getMapping().getTableDefinition();
 		final Table table = Table.Builder.create(tableDefinition, region).build();
 
@@ -318,6 +329,7 @@ public class RepositoryImpl<T> implements Repository<T> {
 		try {
 			dynamoDBDDLOperationsService.deleteTable(deleteTable);
 		} catch (final Exception exception) {
+			//TODO Handle better
 		}
 
 		final CreateTable createTable = CreateTable.Builder.create(table).build();

@@ -42,6 +42,11 @@ public abstract class SetValue<SCALAR extends ScalarValue<INTRINSIC, PERSISTENT>
 		return physicalDataRepresentations;
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return scalarValues.isEmpty();
+	}
+
 	public <F> Collection<F> toPojoValues(final Class<? extends Collection<?>> collectionType, final Class<F> elementsType) {
 		Collection<F> entityPropertyValues;
 		if (ClassUtils.isAssignable(collectionType, List.class)) {

@@ -25,8 +25,8 @@ public class AvempaceModule {
 	@Provides @Singleton
 	public AvempaceConfiguration provideAvempaceConfiguration() {
 		return new AvempaceConfiguration(
-				StringUtils.EMPTY,
-				StringUtils.EMPTY,
+				//"AKIAIQOONXLTVCMQWXZA", "Gi9Ip0hUHiRvfh06rLvS3lsKj28q1PGaqzhJOB2E",
+				StringUtils.EMPTY, StringUtils.EMPTY,
 				SchemaGenerationStrategy.CLEAN_SLATE);
 	}
 }

@@ -4,26 +4,15 @@ import static org.fest.reflect.core.Reflection.constructor;
 import static org.fest.reflect.core.Reflection.field;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.lang.reflect.TypeVariable;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.ClassUtils;
-import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.commons.lang3.reflect.TypeUtils;
 import org.pojomatic.Pojomatic;
 import org.pojomatic.annotations.AutoProperty;
-import org.reflections.ReflectionUtils;
 
-
-import com.polymathiccoder.avempace.Employee;
 import com.polymathiccoder.avempace.entity.domain.Entity;
 import com.polymathiccoder.avempace.entity.domain.EntityCollection;
 import com.polymathiccoder.avempace.entity.domain.EntityCollectionDefinition;
@@ -78,10 +67,11 @@ public class Tuple {
 					.ofType(propertySchema.getType().get())
 					.in(entity.getPojo())
 					.get();
-
-			attributes.add(new Attribute(
-					attributeSchema,
-					AttributeValue.fromEntityPropertyValue(attributeSchema, propertyValue)));
+			if (propertyValue != null) {
+				attributes.add(new Attribute(
+						attributeSchema,
+						AttributeValue.fromEntityPropertyValue(attributeSchema, propertyValue)));
+			}
 		}
 
 		return new Tuple(
